@@ -698,15 +698,11 @@ function Start-ProgramOnDesktop {
     param(
         [string]$programName
     )
-    $initialPath = $PWD.Path
 
     $desktopPath = [Environment]::GetFolderPath("Desktop")
     $programPath = Join-Path $desktopPath "$programName.lnk"
-    Set-Location $desktopPath
     Start-Process $programPath
-    Set-Location $PWD.Path
 
-    Set-Location $initialPath
 }
 
 Set-Alias -Name lance -Value Start-ProgramOnDesktop
