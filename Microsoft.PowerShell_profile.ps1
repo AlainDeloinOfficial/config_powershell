@@ -696,13 +696,63 @@ Set-PSReadLineKeyHandler -Key Ctrl+Shift+t `
 
 function Start-ProgramOnDesktop {
     param(
+        [Parameter(Mandatory=$true)]
         [string]$programName
     )
 
     $desktopPath = [Environment]::GetFolderPath("Desktop")
     $programPath = Join-Path $desktopPath "$programName.lnk"
-    Start-Process $programPath
 
+    if (Test-Path $programPath) {
+        Start-Process $programPath
+    }
+    else {
+        $errorMessage = "Cannot find $programName.lnk on the desktop."
+        if (-not (Test-Path $desktopPath)) {
+            $errorMessage += " The desktop folder does not exist."
+        }
+        throw $errorMessage
+    }
 }
 
 Set-Alias -Name lance -Value Start-ProgramOnDesktop
+
+function Search-Firefox {
+
+    $firefoxPath = "C:\Program Files\Mozilla Firefox\firefox.exe"
+    $searchQuery = Read-Host "Rentrez votre recherche"
+    $encodedQuery = $searchQuery -replace " ", "+"
+
+
+    Start-Process $firefoxPath -ArgumentList "https://www.google.com/search?q=$encodedQuery"
+}
+
+
+Set-Alias -Name fire -Value Search-Firefox
+
+# pour stopper les onglets ouverts
+
+function Close-Program {
+    param (
+        [string]$ProgramName
+    )
+
+    Get-Process -Name $ProgramName -ErrorAction SilentlyContinue | ForEach-Object { $_.CloseMainWindow() }
+}
+
+Set-Alias -Name ferm -Value Close-Program
+
+# Pour ouvrir le folder d'un file 
+
+function Set-FileDirectory {
+    #[CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$FilePath
+    )
+
+    $DirectoryPath = Split-Path -Path $FilePath -Parent
+    Set-Location -Path $DirectoryPath
+}
+
+Set-Alias -Name cdf -Value Set-FileDirectory
