@@ -5,3 +5,7 @@ personnalisation du Powershell windows selon mes goûts.
 
 crédits à Scott Hanselman pour le reste.
 En cas de problème : https://www.youtube.com/watch?v=VT2L1SXFq9U&list=WL&index=1
+
+## Outils Suplémentaires
+
+Install-Module PSWritePDF -Force
