@@ -756,3 +756,19 @@ function Set-FileDirectory {
 }
 
 Set-Alias -Name cdf -Value Set-FileDirectory
+
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+
+function Show-Matrix {
+    param (
+        [Parameter(Mandatory=$false)]
+        [string]$FilePath
+    )
+
+    $command = "D:\Informatique_perso\matrix\matrix.exe --pdf"
+
+    Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", "$command" -WindowStyle Maximized
+
+}
+
+Set-Alias -Name pause -Value Show-Matrix
